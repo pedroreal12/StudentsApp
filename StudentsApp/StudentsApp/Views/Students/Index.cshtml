@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table id="tabela">
+    <thead>
+        <tr>
+            <td colspan="4">
+                <input type="text" placeholder="Search by Name and Last Name" id="inpSearch">
+                <button id="btnSearch" onclick="getSearch()">Search</button>
+            </td>
+        </tr>
+        <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+        </tr>
+    </thead>
+
+    <tbody id="body-table">
+    </tbody>
+
+
+    <tfoot id="foot-table">
+    </tfoot>
+</table>
+
+@section Scripts {
+     <script type="text/javascript" src="~/js/index.js"></script>
+}

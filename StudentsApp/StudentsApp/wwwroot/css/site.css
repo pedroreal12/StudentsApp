@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: lightgray;
+    text-align: center;
+    font-size: 25px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+header {
+    background-color: black;
+    color: white;
+    text-align: left;
+    padding-left: 10%;
+    line-height: 65px;
+    margin-top: 0px;
+}
+
+#tabela {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    border-collapse: collapse;
+}
+
+tbody {
+    border: solid gray 2px;
+    border-collapse: separate;
+}
+
+    tbody tr:nth-child(odd) {
+        background-color: gray;
+        border-style: outset;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: white;
+        border-style: outset;
+    }
+
+thead tr {
+    text-justify: center;
+    font-weight: bold;
+}
+
+button {
+    border: solid gray 1px;
+    font-size: 20px;
+    display: flex;
+    align-items: left;
+    vertical-align: bottom;
+    float: left;
+}
+
+input {
+    border-radius: 6px;
+    width: 80%;
+    height: 30px;
+}
+
+.btnControls {
+    color: blue;
+    width: 5%;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+button:hover {
+    background-color: blue;
+    color: white;
+}
+
+#btnSearch {
+    float: right;
+    width: 10%;
+    height: 40px;
+    background-color: white;
+    border-color: green;
+    color: green;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+    #btnSearch:hover {
+        background-color: green;
+        color: white;
+    }
+
+#btnPrevious {
+    background-color: lightgray;
+    color: gray;
+    width: 15%;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+    #btnPrevious:hover {
+        background-color: gray;
+        color: lightgray;
+        width: 15%;
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+    }
+
+#btnNext {
+    width: 9%;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
