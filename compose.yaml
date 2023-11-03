@@ -11,23 +11,27 @@ services:
   server:
     volumes:
       - type: bind
-        source: ./StudentsApp/StudentsApp/wwwroot
+        source: ./StudentsApp/StudentsApp
         target: /source/
     build:
       context: .
       target: final
     ports:
       - 8080:80
-  db:
-    image: mysql:8.0
-    volumes:
-      - db-data:/var/lib/mysql/data
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: db-dev
-      MYSQL_PASSWORD: root
-    ports:
-    - "3306:3306"
-volumes:
-  db-data:
+#   links:
+#     - db
+#   depends_on:
+#     - db
+#   db:
+#     image: mysql:8.0
+#     volumes:
+#       - db-data:/var/lib/mysql/data
+#     environment:
+#       MYSQL_ROOT_PASSWORD: root
+#       MYSQL_DATABASE: db-dev
+#       MYSQL_PASSWORD: root
+#     ports:
+#     - "3306:3306"
+# volumes:
+#   db-data:
     
