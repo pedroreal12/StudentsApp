@@ -18,7 +18,7 @@ namespace StudentsApp.Controllers
 
         public IActionResult Index()
         {
-            return View(students);
+            return View();
         }
 
         [HttpGet]
@@ -66,10 +66,23 @@ namespace StudentsApp.Controllers
             }
         }
         //GET Edit
-        public IActionResult Edit()
+        public IActionResult Edit(int Id)
         {
             return View();
         }
+        //POST Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int Id, IFormCollection collection)
+        {
+            return View();
+        }
+
+        public IActionResult Details(int Id)
+        {
+            return View();
+        }
+
         //GET Delete
         public IActionResult Delete()
         {
