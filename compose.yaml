@@ -12,7 +12,7 @@ services:
   server:
     volumes:
       - type: bind
-        source: ./StudentsApp/StudentsApp
+        source: ./StudentsApp/StudentsApp/
         target: /source/
     build:
       context: .
@@ -32,4 +32,5 @@ services:
     - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dev-db
     

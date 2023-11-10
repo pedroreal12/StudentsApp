@@ -15,7 +15,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 COPY . /source
 
 WORKDIR /source/StudentsApp/StudentsApp
-RUN dotnet build -o /app
+RUN dotnet publish -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS final
 WORKDIR /app
