@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsApp.Models;
 using System.Diagnostics;
+using Microsoft.Data.SqlClient;
 using System.Text.Json;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace StudentsApp.Controllers
 {
     public class StudentsController : Controller
     {
-        public static List<StudentsModel> students = new List<StudentsModel>();
-
         private readonly ILogger<StudentsController> _logger;
 
         public StudentsController(ILogger<StudentsController> logger)
@@ -24,8 +25,14 @@ namespace StudentsApp.Controllers
         [HttpGet]
         public JsonResult GetStudents()
         {
-            var data = JsonSerializer.Serialize(students);
-            return Json(data);
+            using (var context = new SchoolContext())
+            {
+                var students = context.People
+                    .FromSql($"SELECT * FROM dbo.People WHERE fkIdRoles = 2")
+                    .ToList();
+                var data = JsonSerializer.Serialize(students);
+                return Json(data);
+            }
         }
 
         //GET Create
@@ -40,7 +47,7 @@ namespace StudentsApp.Controllers
         {
             try
             {
-                foreach (StudentsModel student in students)
+                /* foreach (StudentsModel student in students)
                 {
                     if (int.Parse(collection["Age"]) < 1)
                     {
@@ -49,15 +56,24 @@ namespace StudentsApp.Controllers
                         student.Age = int.Parse(collection["Age"]);
                         return View(student);
                     }
-                }
+                } */
 
-                students.Add(new StudentsModel()
+                /* students.Add(new StudentsModel()
                 {
                     Id = students.Count + 1,
                     FirstName = collection["FirstName"],
                     LastName = collection["LastName"],
-                    Age = int.Parse(collection["Age"])
-                });
+                    Age = int.Parse(collection["Age"]),
+                    fkIdRole = 1
+                }); */
+                using var context = new SchoolContext();
+                try
+                {
+                    context.Database.ExecuteSqlRaw($"INSERT INTO People(FirstName, LastName, BirthDate, fkIdRoles) VALUES ('{collection["FirstName"]}', '{collection["LastName"]}', '{collection["BirthDate"]}', 2)");
+                } catch(Exception e)
+                {
+                    Console.WriteLine(e);
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
