@@ -11,7 +11,7 @@ public partial class Person
 
     public string LastName { get; set; } = null!;
 
-    public DateTime BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
 
     public int FkIdRoles { get; set; }
 

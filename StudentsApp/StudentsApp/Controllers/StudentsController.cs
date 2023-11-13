@@ -28,7 +28,7 @@ namespace StudentsApp.Controllers
             using (var context = new SchoolContext())
             {
                 var students = context.People
-                    .FromSql($"SELECT * FROM dbo.People WHERE fkIdRoles = 2")
+                    .FromSql($"SELECT * FROM People WHERE fkIdRoles = 1")
                     .ToList();
                 var data = JsonSerializer.Serialize(students);
                 return Json(data);
@@ -57,19 +57,10 @@ namespace StudentsApp.Controllers
                         return View(student);
                     }
                 } */
-
-                /* students.Add(new StudentsModel()
-                {
-                    Id = students.Count + 1,
-                    FirstName = collection["FirstName"],
-                    LastName = collection["LastName"],
-                    Age = int.Parse(collection["Age"]),
-                    fkIdRole = 1
-                }); */
-                using var context = new SchoolContext();
                 try
                 {
-                    context.Database.ExecuteSqlRaw($"INSERT INTO People(FirstName, LastName, BirthDate, fkIdRoles) VALUES ('{collection["FirstName"]}', '{collection["LastName"]}', '{collection["BirthDate"]}', 2)");
+                    using var context = new SchoolContext();
+                    context.Database.ExecuteSqlRaw($"INSERT INTO People(FirstName, LastName, BirthDate, fkIdRoles) VALUES ('{collection["FirstName"]}', '{collection["LastName"]}', '{collection["BirthDate"]}', 1)");
                 } catch(Exception e)
                 {
                     Console.WriteLine(e);

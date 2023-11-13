@@ -1,11 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql;
 using StudentsApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<SchoolContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("database")));
-
+var ConnectionString = builder.Configuration.GetConnectionString("database-mysql");
+builder.Services.AddDbContext<SchoolContext>(options =>
+{
+    options.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString));
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

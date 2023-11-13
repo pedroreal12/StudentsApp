@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace StudentsApp.Models;
 
@@ -25,9 +26,8 @@ public partial class SchoolContext : DbContext
     public virtual DbSet<Person> People { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=School;Trusted_Connection=true; TrustServerCertificate=true;");
+        => optionsBuilder.UseMySql("Server=projcs-db-1;Port=3306;Database=dev-db;User=root;Password=root;", ServerVersion.AutoDetect("Server=projcs-db-1;Port=3306;Database=dev-db;User=root;Password=root;"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
