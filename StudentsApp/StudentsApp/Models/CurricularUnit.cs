@@ -7,9 +7,13 @@ public partial class CurricularUnit
 {
     public int Id { get; set; }
 
-    public string StrName { get; set; } = null!;
+    public string? StrName { get; set; }
 
-    public virtual ICollection<ClassDetail> ClassDetails { get; set; } = new List<ClassDetail>();
+    public int? FkIdCurricularUnit { get; set; }
+
+    public virtual CurricularUnit? FkIdCurricularUnitNavigation { get; set; }
+
+    public virtual ICollection<CurricularUnit> InverseFkIdCurricularUnitNavigation { get; set; } = new List<CurricularUnit>();
 
     public virtual ICollection<Objective> Objectives { get; set; } = new List<Objective>();
 }

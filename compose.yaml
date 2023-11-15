@@ -15,6 +15,9 @@ services:
     depends_on:
       - db
   db:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile.db
     image: mysql:8.0
     volumes:
       - ./db-data:/var/lib/mysql

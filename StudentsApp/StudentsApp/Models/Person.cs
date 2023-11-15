@@ -7,15 +7,15 @@ public partial class Person
 {
     public int Id { get; set; }
 
-    public string FirstName { get; set; } = null!;
+    public string? FirstName { get; set; }
 
-    public string LastName { get; set; } = null!;
+    public string? LastName { get; set; }
 
-    public DateOnly BirthDate { get; set; }
+    public int? FkIdRoles { get; set; }
 
-    public int FkIdRoles { get; set; }
+    public DateOnly? BirthDate { get; set; }
 
     public virtual ICollection<ClassDetail> ClassDetails { get; set; } = new List<ClassDetail>();
 
-    public virtual Role FkIdRolesNavigation { get; set; } = null!;
+    public virtual Role? FkIdRolesNavigation { get; set; }
 }

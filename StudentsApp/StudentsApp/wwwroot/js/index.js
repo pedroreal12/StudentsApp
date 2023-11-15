@@ -19,7 +19,6 @@ $(document).ready(function () {
             alert("Error: " + error);
         }
     });
-
 });
 
 function resetTable(data, currentPage = 1) {

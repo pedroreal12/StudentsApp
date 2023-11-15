@@ -5,11 +5,14 @@ using Microsoft.Data.SqlClient;
 using System.Text.Json;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace StudentsApp.Controllers
 {
     public class StudentsController : Controller
     {
+        private readonly DevDbContext _context = new();
         private readonly ILogger<StudentsController> _logger;
 
         public StudentsController(ILogger<StudentsController> logger)
@@ -25,14 +28,11 @@ namespace StudentsApp.Controllers
         [HttpGet]
         public JsonResult GetStudents()
         {
-            using (var context = new SchoolContext())
-            {
-                var students = context.People
-                    .FromSql($"SELECT * FROM People WHERE fkIdRoles = 1")
-                    .ToList();
-                var data = JsonSerializer.Serialize(students);
-                return Json(data);
-            }
+            var students = _context.People
+                .Where(students => students.FkIdRoles == 1)
+                .ToList();
+            var data = JsonSerializer.Serialize(students);
+            return Json(data);
         }
 
         //GET Create
@@ -47,35 +47,35 @@ namespace StudentsApp.Controllers
         {
             try
             {
-                /* foreach (StudentsModel student in students)
+                Person student = new()
                 {
-                    if (int.Parse(collection["Age"]) < 1)
-                    {
-                        student.FirstName = collection["FirstName"];
-                        student.LastName = collection["LastName"];
-                        student.Age = int.Parse(collection["Age"]);
-                        return View(student);
-                    }
-                } */
-                try
-                {
-                    using var context = new SchoolContext();
-                    context.Database.ExecuteSqlRaw($"INSERT INTO People(FirstName, LastName, BirthDate, fkIdRoles) VALUES ('{collection["FirstName"]}', '{collection["LastName"]}', '{collection["BirthDate"]}', 1)");
-                } catch(Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+                    FirstName = collection["FirstName"],
+                    LastName = collection["LastName"],
+                    BirthDate = DateOnly.Parse(collection["BirthDate"]),
+                    FkIdRoles = 1
+                };
+
+                // Add the new object to the Orders collection.
+                //_context.People.InsertOnSubmit(student);
+
+                _context.People.AddAsync(student);
+                _context.SaveChanges();
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 return View();
             }
         }
         //GET Edit
         public IActionResult Edit(int Id)
         {
-            return View();
+            var student = _context.People
+                .Where(students => students.FkIdRoles == 1 && students.Id == Id)
+                .ToList();
+            return View(student);
         }
         //POST Edit
         [HttpPost]
