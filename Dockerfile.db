@@ -1,0 +1,4 @@
+FROM mysql:8.0 as build
+ENV MYSQL_ROOT_PASSWORD=root
+RUN type=bind,src=./db-data,target=/var/lib/mysql
+EXPOSE 3306
