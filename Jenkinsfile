@@ -8,9 +8,37 @@ pipeline {
             }
         }
         stage('Test') {
-            steps {
-                sh 'ls -la'
-            }
+		steps {
+			script {
+				properties ([
+					parameters ([
+						choice(
+							choices: ['ONE', 'TWO'],
+							name: 'PARAMETER_01'
+						),
+						booleanParam(
+							defaultValue: true,
+							description: '',
+							name: 'BOOLEAN'
+						),
+						text(
+							defaultValue: '''
+							this is a multine
+							string
+							''',
+							name: 'MULTI-LINE-STRING'
+						),
+						string(
+							defaultValue: 'scriptcrunch',
+							name: 'STRING-PARAMETER',
+							trim: true
+
+						)
+					])
+				])
+			}
+			echo 'Testing this bs'
+		}
         }
         stage('Deploy') {
             steps {
