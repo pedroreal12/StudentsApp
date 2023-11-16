@@ -38,6 +38,9 @@ pipeline {
 				])
 			}
 			echo 'Testing ' + params.BOOLEAN
+			echo 'Testing ' + params.PARAMETER_01
+			echo 'Testing ' + params.MULTI-LINE-STRING
+			echo 'Testing ' + params.STRING-PARAMETER
 		}
         }
         stage('Deploy') {
