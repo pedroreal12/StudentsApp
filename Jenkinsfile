@@ -37,7 +37,7 @@ pipeline {
 					])
 				])
 			}
-			echo 'Testing this bs'
+			echo 'Testing ${BOOLEAN}'
 		}
         }
         stage('Deploy') {
