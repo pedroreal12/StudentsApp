@@ -1,11 +1,13 @@
 pipeline {
-    agent {dockerfile true}
-
+    agent {
+        docker {image "mcr.microsoft.com/dotnet/aspnet:6.0-alpine"}
+    }
     stages {
-        stage('Build') {
+        stage('Teste') {
             steps {
-                echo "Built"
-            }
+
+                sh "dotnet run --urls http://localhost:5000"
+            } 
         }
     }
 }
