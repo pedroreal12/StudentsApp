@@ -1,13 +1,42 @@
 pipeline {
-    agent none
+    agent {dockerfile true}
         stages {
-            stage ('Build') {
+            stage('Restore packages'){
                 steps{
-                    script {
-                        docker.build('-f ./Dockerfile .').inside() {
-                            sh 'dotnet ./app/StudentsApp.dll'
-                        }
-                    }
+                    sh 'dotnet restore StudentsApp.sln'
+                }
+            }
+            stage('Clean'){
+                steps{
+                    sh 'dotnet clean StudentsApp.sln'
+                }
+            }
+            stage('Build'){
+                steps{
+                    sh 'dotnet build StudentsApp.sln' 
+                }
+            }
+            stage('Publish'){
+                steps{
+                    sh 'dotnet publish StudentsApp/Students.csproj 
+                }
+            }
+            stage('Deploy'){
+                steps{
+                    sh '''
+                        ARG UID=10001
+                        RUN adduser \
+                        --disabled-password \
+                        --gecos "" \
+                        --home "/nonexistent" \
+                        --shell "/sbin/nologin" \
+                        --no-create-home \
+                        --uid "${UID}" \
+                        appuser
+                        USER appuser
+                        kill -9 $pid
+                        '''
+                        sh 'cd ./app/StudentsApp/'
                 }
             }
         }
