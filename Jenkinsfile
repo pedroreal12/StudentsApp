@@ -1,10 +1,13 @@
 pipeline {
     agent { dockerfile true }
     stages {
-        stage('Teste') {
+        stage('Build') {
             steps {
-                sh 'cd ./StudentsApp/app'
-                sh 'dotnet StudentsApp.dll'
+                sh '''
+                    echo "Running"
+                    cd ./StudentsApp/app
+                    dotnet StudentsApp.dll
+                '''
             } 
         }
     }
