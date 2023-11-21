@@ -1,8 +1,8 @@
 pipeline {
-    agent {dockerfile true}
         stages {
             stage ('Run') {
                 steps {
+                    agent {dockerfile true}
                     sh '''
                         ls -al
                         cd ./app/
