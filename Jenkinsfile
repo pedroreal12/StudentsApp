@@ -1,33 +1,12 @@
 pipeline {
     agent none
         stages {
-            stage('Building DB') {
-                agent {
-                    dockerfile {
-                        filename 'Dockerfile.db'
-                            dir './'
+            stage ('Build') {
+                script {
+                    docker.build('-f ./Dockerfile .').inside() {
+                        sh 'dotnet ./app/StudentsApp.dll'
                     }
                 }
-                steps {
-                    sh '''
-                        echo "Building DB"
-                        '''
-                }
-            }
-            stage('Building Server') {
-                agent {
-                    dockerfile {
-                        filename 'Dockerfile'
-                            dir './'
-                    }
-                }
-                steps {
-                    sh '''
-                        echo "Building Server"
-                        cd ./StudentsApp/app
-                        dotnet StudentsApp.dll
-                        '''
-                } 
             }
         }
 }
