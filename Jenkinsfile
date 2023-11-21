@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('Teste') {
             steps {
-
-                sh "dotnet run --urls http://localhost:5000"
+                sh "cd ./app"
+                sh "dotnet StudentsApp.dll"
             } 
         }
     }
