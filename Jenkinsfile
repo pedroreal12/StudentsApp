@@ -4,12 +4,7 @@ pipeline {
             stage ('Run') {
                 steps {
                     script {
-                        img = docker.build('teste-jenkins')
-
-                            img.inside('--entrypoint= -e dotnet ./app/StudentsApp.dll') {
-                                sh '''
-                                    echo "worked"
-                                    '''
+                        img = docker.build('teste-jenkins').inside('--entrypoint= -e dotnet ./app/StudentsApp.dll') {
                             }   
                     }
                 }
