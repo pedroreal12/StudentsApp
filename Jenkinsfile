@@ -8,8 +8,9 @@ pipeline {
                         img.inside('--entrypoint= -e dotnet ./app/StudentsApp.dll') {
                             sh '''
                                 echo "worked"
-                            '''
+                                '''
                         }   
                 }
             }
         }
+}
