@@ -1,15 +1,15 @@
 pipeline {
     agent none
-    stages {
-        stage ('Run') {
-            agent {dockerfile true}
-            steps {
-                sh '''
-                    ls -al
-                    cd ./app/
-                    dotnet ./StudentsApp.dll
-                    '''
+        stages {
+            stage ('Run') {
+                script {
+                    img = docker.build('-f ./Dockerfile')
+
+                        img.inside('--entrypoint= -e dotnet ./app/StudentsApp.dll') {
+                            sh '''
+                                echo "worked"
+                            '''
+                        }   
+                }
             }
         }
-    }
-}
