@@ -3,7 +3,7 @@ pipeline {
         stages {
             stage('Restore packages'){
                 steps{
-                    sh 'dotnet restore StudentsApp.sln'
+                    sh 'dotnet restore ./app/StudentsApp.sln'
                 }
             }
             stage('Clean'){
@@ -18,7 +18,7 @@ pipeline {
             }
             stage('Publish'){
                 steps{
-                    sh 'dotnet publish StudentsApp/Students.csproj 
+                    sh 'dotnet publish StudentsApp/Students.csproj' 
                 }
             }
             stage('Deploy'){
