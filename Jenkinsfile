@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker {image "mcr.microsoft.com/dotnet/aspnet:6.0-alpine"}
-    }
+    agent { dockerfile true }
     stages {
         stage('Teste') {
             steps {
