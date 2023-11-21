@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('Teste') {
             steps {
-                sh "cd ./StudentsApp/app"
-                sh "dotnet StudentsApp.dll"
+                sh 'cd ./StudentsApp/app'
+                sh 'dotnet StudentsApp.dll'
             } 
         }
     }
