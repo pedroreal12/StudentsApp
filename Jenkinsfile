@@ -1,25 +1,13 @@
 pipeline {
-    agent any
-    stages {
-        stage('Initializing') {
-            steps {
-                sh '''
-                    pwd
-                    cd ./StudentsApp
-                    cd ./StudentsApp
-                    ls -la
-                    
-                '''
-            }
+    agent {
+        dockerfile {
+            filename 'Dockerfile'
+                dir './'
+                args '-it --entrypoint="dotnet StudentsApp.dll"'
         }
+    }
+    stages {
         stage('Build') {
-            agent {
-                dockerfile {
-                    filename 'Dockerfile'
-                        dir './'
-                        args '-it --entrypoint="dotnet StudentsApp.dll"'
-                }
-            }
             steps {
                 sh '''
                     pwd
@@ -28,6 +16,19 @@ pipeline {
                     ls -la
                 '''
                 echo "Building"
+            }
+        }
+        stage('Run') {
+            agent {
+                docker {
+                    image 'projcs-server'
+                    label 'projcs-server'
+                }
+            }
+            steps{
+                sh '''
+                    ls -al
+                '''
             }
         }
     }
