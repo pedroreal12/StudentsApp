@@ -3,7 +3,6 @@ pipeline {
         dockerfile {
             filename 'Dockerfile'
                 dir './'
-                args '-it --entrypoint="dotnet StudentsApp.dll"'
         }
     }
     stages {
