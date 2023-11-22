@@ -21,7 +21,6 @@ pipeline {
             agent {
                 docker {
                     image 'projcs-server'
-                    label 'projcs-server'
                 }
             }
             steps{
