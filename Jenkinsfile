@@ -8,7 +8,7 @@ pipeline {
                     cd ./StudentsApp
                     cd ./StudentsApp
                     ls -la
-                    dotnet run
+                    dotnet --list-sdks 
                 '''
                 echo "Building"
             }
