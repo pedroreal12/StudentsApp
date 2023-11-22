@@ -1,5 +1,11 @@
 pipeline {
-    agent {dockerfile true}
+    agent {
+        docker {
+            filename 'Dockerfile'
+            dir './'
+            args '-it --entrypoint='
+        }
+    }
     stages {
         stage('Build') {
             steps {
@@ -8,7 +14,6 @@ pipeline {
                     cd ./StudentsApp
                     cd ./StudentsApp
                     ls -la
-                    dotnet --list-sdks 
                 '''
                 echo "Building"
             }
