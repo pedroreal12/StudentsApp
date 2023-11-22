@@ -4,7 +4,10 @@ pipeline {
         stage('Build') {
             agent {dockerfile true}
             steps {
-                sh 'ls -la'
+                sh '''
+                    cd ./StudentsApp
+                    ls -la
+                '''
                 echo "Building"
             }
         }
