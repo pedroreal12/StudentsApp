@@ -5,6 +5,8 @@ pipeline {
             agent {dockerfile true}
             steps {
                 sh '''
+                    pwd
+                    cd ./StudentsApp
                     cd ./StudentsApp
                     ls -la
                 '''
