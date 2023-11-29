@@ -1,30 +1,17 @@
 # syntax=docker/dockerfile:1
 
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Dockerfile reference guide at
-# https://docs.docker.com/engine/reference/builder/
-
-################################################################################
-
-# Learn about building .NET container images:
-# https://github.com/dotnet/dotnet-docker/blob/main/samples/README.md
-
-# Create a stage for building the application.
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 
 COPY . /source
 
 WORKDIR /source/StudentsApp/StudentsApp
-RUN dotnet publish -o /app
+RUN dotnet publish -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS final
 WORKDIR /app
 
-# Copy everything needed to run the app from the "build" stage.
 COPY --from=build /app .
 
-# Create a non-privileged user that the app will run under.
-# See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
 ARG UID=10001
 RUN adduser \
     --disabled-password \
@@ -36,4 +23,4 @@ RUN adduser \
     appuser
 USER appuser
 
-#ENTRYPOINT ["dotnet", "StudentsApp.dll"]
+ENTRYPOINT ["dotnet", "StudentsApp.dll"]
