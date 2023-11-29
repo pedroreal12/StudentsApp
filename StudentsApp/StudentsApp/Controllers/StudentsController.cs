@@ -6,13 +6,12 @@ using System.Text.Json;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
-using Org.BouncyCastle.Asn1.X509;
 
 namespace StudentsApp.Controllers
 {
     public class StudentsController : Controller
     {
-        private readonly DevDbContext _context = new();
+        private readonly SchoolContext _context = new();
         private readonly ILogger<StudentsController> _logger;
 
         public StudentsController(ILogger<StudentsController> logger)
@@ -29,7 +28,7 @@ namespace StudentsApp.Controllers
         public JsonResult GetStudents()
         {
             var students = _context.People
-                .Where(students => students.FkIdRoles == 1)
+                .Where(students => students.FkIdRoles == 2)
                 .ToList();
             var data = JsonSerializer.Serialize(students);
             return Json(data);
@@ -51,15 +50,12 @@ namespace StudentsApp.Controllers
                 {
                     FirstName = collection["FirstName"],
                     LastName = collection["LastName"],
-                    BirthDate = DateOnly.Parse(collection["BirthDate"]),
+                    BirthDate = DateTime.Parse(collection["BirthDate"]),
                     FkIdRoles = 1
                 };
 
                 // Add the new object to the Orders collection.
                 //_context.People.InsertOnSubmit(student);
-
-                _context.People.AddAsync(student);
-                _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -72,10 +68,7 @@ namespace StudentsApp.Controllers
         //GET Edit
         public IActionResult Edit(int Id)
         {
-            var student = _context.People
-                .Where(students => students.FkIdRoles == 1 && students.Id == Id)
-                .ToList();
-            return View(student);
+            return View();
         }
         //POST Edit
         [HttpPost]

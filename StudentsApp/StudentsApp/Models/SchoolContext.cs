@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StudentsApp.Models;
 
-public partial class DevDbContext : DbContext
+public partial class SchoolContext : DbContext
 {
-    public DevDbContext()
+    public SchoolContext()
     {
     }
 
-    public DevDbContext(DbContextOptions<DevDbContext> options)
+    public SchoolContext(DbContextOptions<SchoolContext> options)
         : base(options)
     {
     }
@@ -26,95 +26,93 @@ public partial class DevDbContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseMySql("server=localhost;port=3306;database=dev-db;user=root;password=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.35-mysql"));
+        => optionsBuilder.UseSqlServer("Server=pedroreal\\SQLEXPRESS;Database=School;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
-            .UseCollation("utf8mb4_0900_ai_ci")
-            .HasCharSet("utf8mb4");
-
         modelBuilder.Entity<ClassDetail>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Id).HasName("PK__Class_De__3214EC070708EA46");
 
             entity.ToTable("Class_Details");
 
-            entity.HasIndex(e => e.FkIdTeacher, "fk_Class_Details_1_idx");
-
-            entity.Property(e => e.FkIdTeacher).HasColumnName("fkIdTeacher");
+            entity.Property(e => e.FkIdCurricularUnits).HasColumnName("fkIdCurricularUnits");
+            entity.Property(e => e.FkIdPerson).HasColumnName("fkIdPerson");
             entity.Property(e => e.StrName)
                 .HasMaxLength(150)
+                .IsUnicode(false)
                 .HasColumnName("strName");
             entity.Property(e => e.StrYear)
-                .HasMaxLength(9)
+                .HasMaxLength(4)
+                .IsUnicode(false)
+                .IsFixedLength()
                 .HasColumnName("strYear");
 
-            entity.HasOne(d => d.FkIdTeacherNavigation).WithMany(p => p.ClassDetails)
-                .HasForeignKey(d => d.FkIdTeacher)
-                .HasConstraintName("fk_Class_Details_1");
+            entity.HasOne(d => d.FkIdCurricularUnitsNavigation).WithMany(p => p.ClassDetails)
+                .HasForeignKey(d => d.FkIdCurricularUnits)
+                .HasConstraintName("FK__Class_Det__fkIdC__4D94879B");
+
+            entity.HasOne(d => d.FkIdPersonNavigation).WithMany(p => p.ClassDetails)
+                .HasForeignKey(d => d.FkIdPerson)
+                .HasConstraintName("FK__Class_Det__fkIdP__4CA06362");
         });
 
         modelBuilder.Entity<CurricularUnit>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Id).HasName("PK__Curricul__3214EC07293D9EDB");
 
             entity.ToTable("Curricular_Units");
 
-            entity.HasIndex(e => e.FkIdCurricularUnit, "fk_Curricular_Units_1_idx");
-
-            entity.Property(e => e.FkIdCurricularUnit).HasColumnName("fkIdCurricularUnit");
             entity.Property(e => e.StrName)
                 .HasMaxLength(150)
+                .IsUnicode(false)
                 .HasColumnName("strName");
-
-            entity.HasOne(d => d.FkIdCurricularUnitNavigation).WithMany(p => p.InverseFkIdCurricularUnitNavigation)
-                .HasForeignKey(d => d.FkIdCurricularUnit)
-                .HasConstraintName("fk_Curricular_Units_1");
         });
 
         modelBuilder.Entity<Objective>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.HasIndex(e => e.FkIdCurricularUnits, "fk_Objectives_1_idx");
+            entity.HasKey(e => e.Id).HasName("PK__Objectiv__3214EC073F0E0D8B");
 
             entity.Property(e => e.FkIdCurricularUnits).HasColumnName("fkIdCurricularUnits");
             entity.Property(e => e.StrLabel)
                 .HasMaxLength(250)
+                .IsUnicode(false)
                 .HasColumnName("strLabel");
 
             entity.HasOne(d => d.FkIdCurricularUnitsNavigation).WithMany(p => p.Objectives)
                 .HasForeignKey(d => d.FkIdCurricularUnits)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("fk_Objectives_1");
+                .HasConstraintName("FK__Objective__fkIdC__49C3F6B7");
         });
 
         modelBuilder.Entity<Person>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Id).HasName("PK__People__3214EC07ECC9E390");
 
-            entity.HasIndex(e => e.FkIdRoles, "fk_People_1_idx");
-
-            entity.Property(e => e.FirstName).HasMaxLength(150);
+            entity.Property(e => e.BirthDate).HasColumnType("date");
+            entity.Property(e => e.FirstName)
+                .HasMaxLength(150)
+                .IsUnicode(false);
             entity.Property(e => e.FkIdRoles).HasColumnName("fkIdRoles");
-            entity.Property(e => e.LastName).HasMaxLength(150);
+            entity.Property(e => e.LastName)
+                .HasMaxLength(150)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.FkIdRolesNavigation).WithMany(p => p.People)
                 .HasForeignKey(d => d.FkIdRoles)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("fk_People_1");
+                .HasConstraintName("FK__People__fkIdRole__44FF419A");
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC07AB906171");
 
             entity.Property(e => e.StrDescription)
-                .HasMaxLength(45)
+                .HasMaxLength(150)
+                .IsUnicode(false)
                 .HasColumnName("strDescription");
             entity.Property(e => e.StrLabel)
                 .HasMaxLength(100)
+                .IsUnicode(false)
                 .HasColumnName("strLabel");
         });
 
