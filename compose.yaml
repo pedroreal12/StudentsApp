@@ -10,22 +10,3 @@ services:
       target: final
     ports:
       - 80:80
-    links:
-      - db
-    depends_on:
-      - db
-  db:
-    build: 
-      context: .
-      dockerfile: ./Dockerfile.db
-    image: mysql:8.0
-    volumes:
-      - ./db-data:/var/lib/mysql
-    ports:
-    - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-  workbench:
-    image: lscr.io/linuxserver/mysql-workbench:latest
-    ports:
-      - 3000:3000
