@@ -15,21 +15,30 @@ public partial class SchoolContext : DbContext
     {
     }
 
+    public virtual DbSet<Class> Classes { get; set; }
+
     public virtual DbSet<ClassDetail> ClassDetails { get; set; }
 
     public virtual DbSet<CurricularUnit> CurricularUnits { get; set; }
-
-    public virtual DbSet<Objective> Objectives { get; set; }
 
     public virtual DbSet<Person> People { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=pedroreal\\SQLEXPRESS;Database=School;Trusted_Connection=True;TrustServerCertificate=True;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=School;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Class>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Classes__3214EC0762E6F239");
+
+            entity.Property(e => e.FkIdClassDetails).HasColumnName("fkIdClassDetails");
+            entity.Property(e => e.FkIdPerson).HasColumnName("fkIdPerson");
+        });
+
         modelBuilder.Entity<ClassDetail>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Class_De__3214EC070708EA46");
@@ -67,21 +76,6 @@ public partial class SchoolContext : DbContext
                 .HasMaxLength(150)
                 .IsUnicode(false)
                 .HasColumnName("strName");
-        });
-
-        modelBuilder.Entity<Objective>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Objectiv__3214EC073F0E0D8B");
-
-            entity.Property(e => e.FkIdCurricularUnits).HasColumnName("fkIdCurricularUnits");
-            entity.Property(e => e.StrLabel)
-                .HasMaxLength(250)
-                .IsUnicode(false)
-                .HasColumnName("strLabel");
-
-            entity.HasOne(d => d.FkIdCurricularUnitsNavigation).WithMany(p => p.Objectives)
-                .HasForeignKey(d => d.FkIdCurricularUnits)
-                .HasConstraintName("FK__Objective__fkIdC__49C3F6B7");
         });
 
         modelBuilder.Entity<Person>(entity =>

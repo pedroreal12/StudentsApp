@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentsApp.Models;
 using System.Diagnostics;
-using Microsoft.Data.SqlClient;
 using System.Text.Json;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -24,12 +22,20 @@ namespace StudentsApp.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpGet]   
         public JsonResult GetStudents()
         {
-            var students = _context.People
-                .Where(students => students.FkIdRoles == 2)
-                .ToList();
+            var students = (from p in _context.People
+                join r in _context.Roles 
+                on p.FkIdRoles equals r.Id
+                where p.FkIdRoles == 2
+                select new {
+                    Id = p.Id,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    BirthDate = p.BirthDate,
+                    Role = r.StrLabel
+                }).ToList();
             var data = JsonSerializer.Serialize(students);
             return Json(data);
         }
@@ -51,12 +57,12 @@ namespace StudentsApp.Controllers
                     FirstName = collection["FirstName"],
                     LastName = collection["LastName"],
                     BirthDate = DateTime.Parse(collection["BirthDate"]),
-                    FkIdRoles = 1
+                    FkIdRoles = 2
                 };
 
                 // Add the new object to the Orders collection.
-                //_context.People.InsertOnSubmit(student);
-
+                _context.People.Add(student);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception e)
@@ -68,25 +74,70 @@ namespace StudentsApp.Controllers
         //GET Edit
         public IActionResult Edit(int Id)
         {
-            return View();
+            if (Id <= 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            Person student = _context.People.Find(Id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
         }
         //POST Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int Id, IFormCollection collection)
         {
-            return View();
+            if (Id <= 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            Person student = _context.People.Find(Id);
+            if (student == null)
+            {
+                return NotFound(); 
+            }
+            return View(student);
         }
 
         public IActionResult Details(int Id)
         {
-            return View();
+            if (Id <= 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            Person student = _context.People.Find(Id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
         }
 
         //GET Delete
-        public IActionResult Delete()
+        public IActionResult Delete(int Id)
         {
-            return View();
+            if (Id <= 0)
+            {
+                return NotFound();
+            } else {
+
+                Person student = _context.People.Find(Id);
+                if (student == null)
+                {
+                    return NotFound();
+                }
+                _context.People.Remove(student);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using StudentsApp.Models;
 using System.Diagnostics;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using System;
+
 
 namespace StudentsApp.Controllers
 {
@@ -9,20 +12,32 @@ namespace StudentsApp.Controllers
     {
 
         private readonly ILogger<TeachersController> _logger;
+        private readonly SchoolContext _context = new();
 
         public TeachersController(ILogger<TeachersController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index() 
+        public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult getTeachers() 
+        public JsonResult GetTeachers() 
         {
-            return View();
+            var teachers = (from p in _context.People
+                join r in _context.Roles
+                on p.FkIdRoles equals r.Id
+                where p.FkIdRoles == 1
+                select new {
+                    Id = p.Id,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Role = r.StrLabel
+                }).ToList();
+            var data = JsonSerializer.Serialize(teachers);
+            return Json(data);
         }
 
         //GET Create
@@ -37,54 +52,108 @@ namespace StudentsApp.Controllers
         {
             try
             {
-                /* foreach (TeachersModel teacher in teachers)
+                Person teacher = new()
                 {
-                    if (int.Parse(collection["Age"]) < 1)
-                    {
-                        teacher.FirstName = collection["FirstName"];
-                        teacher.LastName = collection["LastName"];
-                        teacher.Age = int.Parse(collection["Age"]);
-                        return View(teacher);
-                    }
-                } */
-
-                /* teachers.Add(new StudentsModel()
-                {
-                    Id = teachers.Count + 1,
                     FirstName = collection["FirstName"],
                     LastName = collection["LastName"],
-                    Age = int.Parse(collection["Age"]),
-                    fkIdRole = 2
-                }); */
+                    BirthDate = DateTime.Parse(collection["BirthDate"]),
+                    FkIdRoles = 1
+                };
+
+                // Add the new object to the Orders collection.
+                _context.People.Add(teacher);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Create));
             }
         }
         //GET Edit
         public IActionResult Edit(int Id)
         {
-            return View();
+            if (Id <= 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var teacher = _context.People.Find(Id);
+            if (teacher == null)
+            {
+                return NotFound(); 
+            }
+            return View(teacher);
         }
         //POST Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int Id, IFormCollection collection)
         {
-            return View();
+            try
+            {
+                if (Id <= 0)
+                {
+                    return RedirectToAction(nameof(Index));
+
+                }
+                Person teacher = _context.People.Find(Id);
+                if (teacher == null)
+                {
+                    return NotFound();
+                }
+                teacher.FirstName = collection["FirstName"];
+                teacher.LastName = collection["LastName"];
+                teacher.BirthDate = DateTime.Parse(collection["BirthDate"]);
+                _context.SaveChanges();
+                Console.WriteLine("Role edited!");
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                return View();
+            }
         }
 
         public IActionResult Details(int Id)
         {
-            return View();
+            if (Id <= 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var teacher = _context.People.Find(Id);
+
+            if (teacher == null)
+            {
+                return NotFound();
+            }
+
+            return View(teacher);
         }
 
         //GET Delete
-        public IActionResult Delete()
+        public IActionResult Delete(int Id)
         {
-            return View();
+            try
+            {
+                var teacher = _context.People.Find(Id);
+                if (teacher == null)
+                {
+                    return NotFound();
+                }
+                _context.People.Remove(teacher);
+                _context.SaveChanges();
+                Console.WriteLine("Teacher deleted!");
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
         }
         
     }
