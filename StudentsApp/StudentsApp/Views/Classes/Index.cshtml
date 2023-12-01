@@ -9,33 +9,31 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="tabela">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FkIdPerson)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FkIdClassDetails)
-            </th>
-            <th></th>
+            <td colspan="4">
+                <input type="text" placeholder="Search" id="inpSearch">
+                <button id="btnSearch" onclick="getSearch()">Search</button>
+            </td>
+        </tr>
+        <tr>
+            <th>#</th>
+            <th>Class Detail</th>
+            <th>Student First Name</th>
+            <th>Student Last Name</th>
+            <th>Options</th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FkIdPerson)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FkIdClassDetails)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+
+    <tbody id="body-table">
     </tbody>
+
+
+    <tfoot id="foot-table">
+    </tfoot>
 </table>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/Classes/index.js"></script>
+}

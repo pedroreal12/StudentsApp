@@ -1,6 +1,4 @@
-﻿@model StudentsApp.Models.ClassDetail
-
-@{
+﻿@{
     ViewData["Title"] = "Details";
 }
 
@@ -11,32 +9,31 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StrName)
+            Class Detail Name
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StrName)
+            <label id="valueClassDetailName"></label>
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StrYear)
+            Class Detail Year
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StrYear)
+            <label id="valueClassDetailYear"></label>
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FkIdCurricularUnitsNavigation)
+            Teacher
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FkIdCurricularUnitsNavigation.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FkIdPersonNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FkIdPersonNavigation.Id)
+            <label id="valueTeacher"></label>
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a href="" id="btnEdit">Edit</a>
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="~/js/ClassDetails/details.js"></script>
+}

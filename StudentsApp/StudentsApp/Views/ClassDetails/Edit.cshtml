@@ -24,14 +24,8 @@
                 <span asp-validation-for="StrYear" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FkIdPerson" class="control-label"></label>
-                <select asp-for="FkIdPerson" class="form-control" asp-items="ViewBag.FkIdPerson"></select>
-                <span asp-validation-for="FkIdPerson" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FkIdCurricularUnits" class="control-label"></label>
-                <select asp-for="FkIdCurricularUnits" class="form-control" asp-items="ViewBag.FkIdCurricularUnits"></select>
-                <span asp-validation-for="FkIdCurricularUnits" class="text-danger"></span>
+                <label for="selectTeachers" class="control-label">Teacher</label>
+                <select id="selectTeachers" name="FkIdPerson"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -46,4 +40,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="~/js/ClassDetails/create.js"></script>
 }

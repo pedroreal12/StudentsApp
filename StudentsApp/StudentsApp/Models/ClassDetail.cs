@@ -13,9 +13,5 @@ public partial class ClassDetail
 
     public int FkIdPerson { get; set; }
 
-    public int FkIdCurricularUnits { get; set; }
-
-    public virtual CurricularUnit FkIdCurricularUnitsNavigation { get; set; } = null!;
-
     public virtual Person FkIdPersonNavigation { get; set; } = null!;
 }

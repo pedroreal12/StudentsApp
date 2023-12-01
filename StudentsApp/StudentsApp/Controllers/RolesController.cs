@@ -23,7 +23,7 @@ namespace StudentsApp.Controllers
         public JsonResult GetRoles()
         {
             var roles = _context.Roles
-                .Select(r => new {r.Id, r.StrLabel, r.StrDescription})
+                .Select(r => new { r.Id, r.StrLabel, r.StrDescription })
                 .ToList();
             var data = JsonSerializer.Serialize(roles);
             Console.WriteLine(data);
@@ -82,7 +82,7 @@ namespace StudentsApp.Controllers
             var role = _context.Roles.Find(Id);
             if (role == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
             return View(role);
         }

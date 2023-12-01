@@ -14,14 +14,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="FkIdPerson" class="control-label"></label>
-                <input asp-for="FkIdPerson" class="form-control" />
-                <span asp-validation-for="FkIdPerson" class="text-danger"></span>
+                <label for="selectStudents" class="control-label">Students</label>
+                <select id="selectStudents" name="FkIdPerson"></select>
             </div>
             <div class="form-group">
-                <label asp-for="FkIdClassDetails" class="control-label"></label>
-                <input asp-for="FkIdClassDetails" class="form-control" />
-                <span asp-validation-for="FkIdClassDetails" class="text-danger"></span>
+                <label for="selectClassDetails" class="control-label">Class Details</label>
+                <select id="selectClassDetails" name="FkIdClassDetails"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -36,4 +34,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="~/js/Classes/create.js"></script>
 }

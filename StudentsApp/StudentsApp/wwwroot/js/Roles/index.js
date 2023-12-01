@@ -49,7 +49,7 @@ function buildTable(data, currentPage = 1) {
     $("#body-table").append(tableHTML);
     $("#foot-table>*").remove();
     qnt = data.length / studentsPerPage;
-    qnt = qnt % data.length > 0 ? qnt + 1 : qnt
+    qnt = data.length % qnt > 0 ? qnt + 1 : qnt
 
     btnsHTML = '<td><button class="btnControls" id="btnPrevious" onclick="previous()">Previous</button>';
 

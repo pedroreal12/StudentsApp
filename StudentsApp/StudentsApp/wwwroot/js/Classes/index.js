@@ -1,27 +1,28 @@
-﻿const studentsPerPage = 10;
+var tableData;
+const studentsPerPage = 10;
 var lastClicked = 1;
-var tableData = [];
-$(document).ready(function () {
+
+$(document).ready(function() {
     $.ajax({
-        url: '/Students/GetStudents',
+        url: '/Classes/GetClasses',
         type: 'GET',
-        success: function (data) {
+        success: function(data) {
             data = JSON.parse(data);
             if (data.length > 0) {
-                resetTable(data);
+                buildTable(data);
                 tableData = data;
 
             } else {
-                alert("No Students");
+                alert("No Classes were found");
             }
         },
-        error: function (error) {
+        error: function(error) {
             alert("Error: " + error);
         }
-    });
-});
+    })
+})
 
-function resetTable(data, currentPage = 1) {
+function buildTable(data, currentPage = 1) {
     $("#body-table>*").remove()
     tableHTML = '';
     var startIndex = (currentPage - 1) * studentsPerPage;
@@ -34,12 +35,14 @@ function resetTable(data, currentPage = 1) {
         } else {
             break;
         }
+
         for (var eachValue in dataObj) {
             tableHTML += "<td>" + dataObj[eachValue] + "</td>";
         }
-        tableHTML += "<td><a href='Students/Details/" + dataObj.Id + "'>Details</a></td>";
-        tableHTML += "<td><a href='Students/Edit/" + dataObj.Id + "'>Edit</a></td>";
-        tableHTML += "<td><a href='Students/Delete/" + dataObj.Id + "'>Delete</a></td>";
+
+        tableHTML += "<td><a href='Classes/Details/" + dataObj.Id + "'>Details</a></td>";
+        tableHTML += "<td><a href='Classes/Edit/" + dataObj.Id + "'>Edit</a></td>";
+        tableHTML += "<td><a href='Classes/Delete/" + dataObj.Id + "'>Delete</a></td>";
         tableHTML += "</tr>";
     }
 
@@ -61,7 +64,7 @@ function resetTable(data, currentPage = 1) {
 
 function pagination(currentPage) {
     lastClicked = parseInt(currentPage);
-    resetTable(tableData, currentPage);
+    buildTable(tableData, currentPage);
 }
 
 function next() {
@@ -70,7 +73,7 @@ function next() {
         lastClicked += 1;
     }
 
-    resetTable(tableData, lastClicked);
+    buildTable(tableData, lastClicked);
 }
 
 function previous() {
@@ -78,7 +81,7 @@ function previous() {
         lastClicked -= 1;
     }
 
-    resetTable(tableData, lastClicked);
+    buildTable(tableData, lastClicked);
 }
 
 function getSearch() {
@@ -95,11 +98,11 @@ function getSearch() {
     });
 
     if (results.length == 0) {
-        alert("Não foram encontrados resultados.");
-        resetTable(tableData);
+        alert("No results were found.");
+        buildTable(tableData);
         currentPage = 1;
     } else {
-        resetTable(results);
+        buildTable(results);
         currentPage = 1;
     }
 }

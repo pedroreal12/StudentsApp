@@ -11,6 +11,10 @@
 <body>
     <header>
         <h4>Students</h4>
+        <a asp-controller="Teachers" asp-action="Index">Teachers</a>
+        <a asp-controller="ClassDetails" asp-action="Index">Class Details</a>
+        <a asp-controller="Classes" asp-action="Index">Classes</a>
+        <a asp-controller="Roles" asp-action="Index">Roles</a>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -18,11 +22,11 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <!--<footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2023 - StudentsApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

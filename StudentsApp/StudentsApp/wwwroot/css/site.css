@@ -22,8 +22,19 @@ header {
 #tabela {
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
+    width: 100%;
     border-collapse: collapse;
+}
+
+#btnSearch {
+    float: right;
+    width: 10%;
+    background-color: white;
+    border-color: green;
+    color: green;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 tbody {
@@ -31,19 +42,28 @@ tbody {
     border-collapse: separate;
 }
 
-    tbody tr:nth-child(odd) {
-        background-color: gray;
-        border-style: outset;
-    }
+tbody tr:nth-child(odd) {
+    background-color: gray;
+    border-style: outset;
+}
 
-    tbody tr:nth-child(even) {
-        background-color: white;
-        border-style: outset;
-    }
+tbody tr:nth-child(even) {
+    background-color: white;
+    border-style: outset;
+}
 
 thead tr {
     text-justify: center;
     font-weight: bold;
+    width: 100%;
+}
+
+#foot-table {
+    width: 100%;
+    display: flex;
+    border-style: solid;
+    border-color: inherit;
+    border-width: 0;
 }
 
 button {
@@ -57,13 +77,13 @@ button {
 
 input {
     border-radius: 6px;
-    width: 80%;
+    width: 100%;
     height: 30px;
 }
 
 .btnControls {
     color: blue;
-    width: 5%;
+    width: 100%;
     text-align: center;
     display: table-cell;
     vertical-align: middle;
@@ -74,41 +94,29 @@ button:hover {
     color: white;
 }
 
-#btnSearch {
-    float: right;
-    width: 10%;
-    height: 40px;
-    background-color: white;
-    border-color: green;
-    color: green;
-    text-align: center;
-    display: table-cell;
-    vertical-align: middle;
+#btnSearch:hover {
+    background-color: green;
+    color: white;
 }
-
-    #btnSearch:hover {
-        background-color: green;
-        color: white;
-    }
 
 #btnPrevious {
     background-color: lightgray;
     color: gray;
-    width: 15%;
+    width: 100%;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
 }
 
-    #btnPrevious:hover {
-        background-color: gray;
-        color: lightgray;
-        width: 15%;
-        border-top-left-radius: 6px;
-        border-bottom-left-radius: 6px;
-    }
+#btnPrevious:hover {
+    background-color: gray;
+    color: lightgray;
+    width: 100%;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
 
 #btnNext {
-    width: 9%;
+    width: 100%;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
 }

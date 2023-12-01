@@ -11,20 +11,25 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FkIdPerson)
+           Students 
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FkIdPerson)
+        <dd class = "col-sm-10" >
+            <label id="valueStudents"></label>
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FkIdClassDetails)
+            Class Details
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FkIdClassDetails)
+        <dd class = "col-sm-10" id="valueClassDetail">
+            <label id="valueClassDetail"></label>
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a href="" id="btnEdit">Edit</a>
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="~/js/Classes/details.js"></script>
+}

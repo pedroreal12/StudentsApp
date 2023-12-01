@@ -1,27 +1,28 @@
-﻿const studentsPerPage = 10;
+var tableData;
+const studentsPerPage = 10;
 var lastClicked = 1;
-var tableData = [];
-$(document).ready(function () {
+
+$(document).ready(function() {
     $.ajax({
-        url: '/Students/GetStudents',
+        url: '/ClassDetails/GetClassDetails',
         type: 'GET',
-        success: function (data) {
+        success: function(data) {
             data = JSON.parse(data);
             if (data.length > 0) {
-                resetTable(data);
+                buildTable(data);
                 tableData = data;
 
             } else {
-                alert("No Students");
+                alert("No Class Details were found");
             }
         },
-        error: function (error) {
+        error: function(error) {
             alert("Error: " + error);
         }
-    });
-});
+    })
+})
 
-function resetTable(data, currentPage = 1) {
+function buildTable(data, currentPage = 1) {
     $("#body-table>*").remove()
     tableHTML = '';
     var startIndex = (currentPage - 1) * studentsPerPage;
@@ -34,12 +35,14 @@ function resetTable(data, currentPage = 1) {
         } else {
             break;
         }
+
         for (var eachValue in dataObj) {
             tableHTML += "<td>" + dataObj[eachValue] + "</td>";
         }
-        tableHTML += "<td><a href='Students/Details/" + dataObj.Id + "'>Details</a></td>";
-        tableHTML += "<td><a href='Students/Edit/" + dataObj.Id + "'>Edit</a></td>";
-        tableHTML += "<td><a href='Students/Delete/" + dataObj.Id + "'>Delete</a></td>";
+
+        tableHTML += "<td> <a href='ClassDetails/Details/" + dataObj.Id + "'> Details</a></td>";
+        tableHTML += "<td> <a href='ClassDetails/Edit/" + dataObj.Id + "'> Edit</a></td>";
+        tableHTML += "<td> <a href='ClassDetails/Delete/" + dataObj.Id + "'> Delete</a></td>";
         tableHTML += "</tr>";
     }
 
@@ -48,20 +51,20 @@ function resetTable(data, currentPage = 1) {
     qnt = data.length / studentsPerPage;
     qnt = data.length % qnt > 0 ? qnt + 1 : qnt
 
-    btnsHTML = '<td><button class="btnControls" id="btnPrevious" onclick="previous()">Previous</button>';
+    btnsHTML = '<button class="btnControls" id="btnPrevious" onclick="previous()">Previous</button>';
 
     for (i = 1; i <= qnt; i++) {
         btnsHTML += '<button class="btnControls" onclick="pagination(this.textContent)">' + i + '</button>';
     }
 
-    btnsHTML += '<button class="btnControls" id="btnNext" onclick="next()">Next</button></td>';
+    btnsHTML += '<button class="btnControls" id="btnNext" onclick="next()">Next</button>';
 
     $("#foot-table").append(btnsHTML);
 }
 
 function pagination(currentPage) {
     lastClicked = parseInt(currentPage);
-    resetTable(tableData, currentPage);
+    buildTable(tableData, currentPage);
 }
 
 function next() {
@@ -70,7 +73,7 @@ function next() {
         lastClicked += 1;
     }
 
-    resetTable(tableData, lastClicked);
+    buildTable(tableData, lastClicked);
 }
 
 function previous() {
@@ -78,7 +81,7 @@ function previous() {
         lastClicked -= 1;
     }
 
-    resetTable(tableData, lastClicked);
+    buildTable(tableData, lastClicked);
 }
 
 function getSearch() {
@@ -95,11 +98,11 @@ function getSearch() {
     });
 
     if (results.length == 0) {
-        alert("Não foram encontrados resultados.");
-        resetTable(tableData);
+        alert("No results were found.");
+        buildTable(tableData);
         currentPage = 1;
     } else {
-        resetTable(results);
+        buildTable(results);
         currentPage = 1;
     }
 }
