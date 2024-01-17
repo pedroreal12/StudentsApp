@@ -22,20 +22,21 @@ namespace StudentsApp.Controllers
             return View();
         }
 
-        [HttpGet]   
+        [HttpGet]
         public JsonResult GetStudents()
         {
             var students = (from p in _context.People
-                join r in _context.Roles 
-                on p.FkIdRoles equals r.Id
-                where p.FkIdRoles == 2
-                select new {
-                    Id = p.Id,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    BirthDate = p.BirthDate,
-                    Role = r.StrLabel
-                }).ToList();
+                            join r in _context.Roles
+                            on p.FkIdRoles equals r.Id
+                            where p.FkIdRoles == 2
+                            select new
+                            {
+                                Id = p.Id,
+                                FirstName = p.FirstName,
+                                LastName = p.LastName,
+                                BirthDate = p.BirthDate,
+                                Role = r.StrLabel
+                            }).ToList();
             var data = JsonSerializer.Serialize(students);
             return Json(data);
         }
@@ -100,8 +101,15 @@ namespace StudentsApp.Controllers
             Person student = _context.People.Find(Id);
             if (student == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
+
+            student.FirstName = collection["FirstName"];
+            student.LastName = collection["LastName"];
+            student.BirthDate = DateTime.Parse(collection["BirthDate"]);
+
+            _context.Update(student);
+            _context.SaveChanges();
             return View(student);
         }
 
@@ -127,7 +135,9 @@ namespace StudentsApp.Controllers
             if (Id <= 0)
             {
                 return NotFound();
-            } else {
+            }
+            else
+            {
 
                 Person student = _context.People.Find(Id);
                 if (student == null)
