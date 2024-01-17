@@ -12,6 +12,13 @@ WORKDIR /app
 
 COPY --from=build /app .
 
+RUN apk add --no-cache icu-libs
+
+ENV \
+    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
+    LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8
+
 ARG UID=10001
 RUN adduser \
     --disabled-password \
